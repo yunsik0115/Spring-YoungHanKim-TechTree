@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    url: jdbc:h2:tcp://localhost/~/jpashop
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+
+  jpa:
+    database: h2
+    hibernate:
+      ddl-auto: create # Creates Table Automatically (Drop All before Creating)
+    properties:
+      hibernate:
+        show_sql: true # logging by System.out.println Not recommended on production
+        format_sql: true # Reference Spring Documentation for Details
+    database-platform: org.hibernate.dialect.H2Dialect
+
+
+logging:
+  level:
+    org.hibernate.SQL: debug # Hibernate Log Debug Mode -> ALL SQL Displayed by logger
+    #org.hibernate.type: trace # binding parameter displayed but not enough -> p6spy

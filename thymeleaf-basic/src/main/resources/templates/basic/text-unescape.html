@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>title</title>
+</head>
+<body>
+<h1>text vs utext</h1>
+<ul>
+  <li> th:text <span th:text="${data}"></span></li>
+  <li> th:utext = <span th:utext="${data}"></span></li>
+</ul>
+
+<h1><span th:inline="none"> [[...]] VS [(...)] </span> </h1>
+<ul>
+  <li><span th:inline="none">[[...]]</span>[[${data}]]</li>
+  <li><span th:inline="none">[(...)]</span>[[$(data)]]</li>
+</ul>
+
+<!-- 이스케이프는 게시물 제목과 같이 사용자가 조작할 수 있는 범위에서 HTML의 예기치 못한 깨짐을 방지할 수 있다. -->
+</body>
+</html>

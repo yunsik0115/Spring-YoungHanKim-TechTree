@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<h1>Spring EL 표현식</h1>
+<ul>
+  Object
+  <li>${user.username} = <span th:text="${user.username}"></span></li>
+  <!-- user의 username을 프로퍼티 접근 -->
+  <li>${user['username'] <span th:text="${user['username']}"></span></li>
+  <!-- 위의 user.getUsername()과 같음 -->
+  <li>${user.getUsername()} <span th:text="${user.getUsername()}"></span></li>
+  <!-- user의 getUsername()을 직접 호출 -->
+</ul>
+
+<ul> List
+  <li>${users[0].username = <span th:text="${users[0].username}"></span></li>
+  <li>${users[0]['username'] = <span th:text="${users[0]['username']}"></span></li>
+  <li>${users[0].getUsername() = <span th:text="${users[0].getUsername()}"></span></li>
+</ul>
+
+<ul> Map
+  <li>${userMap['userA'].username} = <span th:text="${userMap['userA'].username}"></span></li>
+  <li>${userMap['userA']['username']} = <span th:text="${userMap['userA']['username']}"></span></li>
+  <li>${userMap['userA'].getUsername()} = <span th:text="${userMap['userA'].getUsername()}"></span></li>
+</ul>
+
+<h1> 지역변수 - th:with </h1>
+<div th:with="first=${users[0]}">
+  <p>처음 사람의 이름은 <span th:text="${first.username}"></span></p>
+</div>
+</body>
+</html>
