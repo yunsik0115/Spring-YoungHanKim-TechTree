@@ -4,6 +4,7 @@ import static org.assertj.core.api.FactoryBasedNavigableListAssert.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.sql.SQLException;
+import java.util.NoSuchElementException;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -19,7 +20,7 @@ class MemberRepositoryV0Test {
 
 	@Test
 	void crud() throws SQLException {
-		Member member = new Member("memberV12", 10000);
+		Member member = new Member("memberV122", 10000);
 		repository.save(member);
 
 		Member findMember = repository.findById(member.getMemberId());
@@ -32,5 +33,9 @@ class MemberRepositoryV0Test {
 		repository.update(member.getMemberId(), 20000);
 		Member updatedMember = repository.findById(member.getMemberId());
 		Assertions.assertThat(updatedMember.getMoney()).isEqualTo(20000);
+
+		repository.delete(member.getMemberId());
+		Assertions.assertThatThrownBy(() -> repository.findById(member.getMemberId())).isInstanceOf(
+			NoSuchElementException.class);
 	}
 }
