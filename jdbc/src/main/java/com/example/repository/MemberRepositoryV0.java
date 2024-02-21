@@ -71,6 +71,52 @@ public class MemberRepositoryV0 {
 		}
 	}
 
+	public void update(String memberId, int money) throws SQLException {
+		String sql = "update member set money=? where member_id=?";
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+
+		try {
+			con = getConnection();
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, money);
+			pstmt.setString(2, memberId);
+
+			int resultSize = pstmt.executeUpdate();
+			log.info("resultSize = {}", resultSize);
+
+		} catch(SQLException e){
+			log.error("db error", e);
+			throw e;
+		} finally {
+			close(con, pstmt, null);
+		}
+
+	}
+
+	public void delete(String memberId) throws SQLException{
+		String sql = "delete from member where memberId = ?";
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+
+		try {
+			con = getConnection();
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, memberId);
+
+			int resultSize = pstmt.executeUpdate();
+			log.info("resultSize = {}", resultSize);
+
+		} catch(SQLException e){
+			log.error("db error", e);
+			throw e;
+		} finally {
+			close(con, pstmt, null);
+		}
+
+	}
 	private void close(Connection con, Statement stmt, ResultSet rs){
 
 		// 단순히 두줄로 close 하는 경우 하나가 close 되지 않는 문제 발생가능(예외 터지는 경우)
