@@ -9,6 +9,8 @@ import javax.sql.DataSource;
 import org.junit.jupiter.api.Test;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
+import com.zaxxer.hikari.HikariDataSource;
+
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -32,6 +34,21 @@ public class ConnectionTest {
 			ConnectionConst.USERNAME,
 			ConnectionConst.PASSWORD);
 		useDataSource(dataSource);
+	}
+
+	@Test
+	void dataSourceConnectionPool() throws SQLException, InterruptedException {
+		// Connection Pooling with HikariCP
+		HikariDataSource hikariDataSource = new HikariDataSource();
+		hikariDataSource.setJdbcUrl(ConnectionConst.URL);
+		hikariDataSource.setUsername(ConnectionConst.USERNAME);
+		hikariDataSource.setPassword(ConnectionConst.PASSWORD);
+		hikariDataSource.setMaximumPoolSize(10);
+		hikariDataSource.setPoolName("MyPool");
+
+		useDataSource(hikariDataSource);
+		Thread.sleep(1000);
+		// 데이터 풀 생성은 별도의 스레드에서 진행하기 때문에 테스트 스레드가 먼저 종료되는 경우 해당 스레드 로그 확인 불가.
 	}
 
 	private void useDataSource(DataSource dataSource) throws SQLException{
