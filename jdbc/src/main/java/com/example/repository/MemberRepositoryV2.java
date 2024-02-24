@@ -106,7 +106,6 @@ public class MemberRepositoryV2 {
 			// connection은 여기서 닫지 않는다.
 			JdbcUtils.closeResultSet(rs);
 			JdbcUtils.closeStatement(pstmt);
-
 			// 서비스에서 연결 종료 필요, 특정 메서드에서 종료하면 안됨.
 		}
 	}
@@ -152,7 +151,7 @@ public class MemberRepositoryV2 {
 			log.error("db error", e);
 			throw e;
 		} finally {
-			close(con, pstmt, null);
+			JdbcUtils.closeStatement(pstmt);
 		}
 
 	}

@@ -26,6 +26,7 @@ public class MemberServiceV2 {
 	public void accountTransfer(String fromId, String toId, int money) throws SQLException {
 		Connection con = dataSource.getConnection();
 		try{
+			con.setAutoCommit(false);
 			bizLogic(con, fromId, toId, money);
 			con.commit();
 		} catch (Exception e) {
@@ -37,15 +38,14 @@ public class MemberServiceV2 {
 	}
 
 	private void bizLogic(Connection con, String fromId, String toId, int money) throws SQLException {
-		con.setAutoCommit(false);
 		// 비즈니스 로직 수행
 		Member fromMember = memberRepository.findById(con, fromId);
 		Member toMember = memberRepository.findById(con, toId);
 
 		// 아래 두 동작은 같은 커넥션에서 동작해야 함 (같은 커넥션 - 같은 세션), 이를 위해 커넥션을 파라메터로 전달.
-		memberRepository.update(fromId, fromMember.getMoney() - money);
+		memberRepository.update(con, fromId, fromMember.getMoney() - money);
 		validation(toMember);
-		memberRepository.update(toId, toMember.getMoney() + money);
+		memberRepository.update(con, toId, toMember.getMoney() + money);
 	}
 
 	private static void release(Connection con) {
