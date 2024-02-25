@@ -1,0 +1,76 @@
+package com.example.jdbc.service;
+
+import java.sql.Connection;
+import java.sql.SQLException;
+
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
+
+import com.example.jdbc.domain.Member;
+import com.example.repository.MemberRepositoryV2;
+import com.example.repository.MemberRepositoryV3;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+/**
+ * Transcation : Transaction Manager
+ */
+@Slf4j
+@RequiredArgsConstructor
+public class MemberServiceV3_1 {
+
+	private final PlatformTransactionManager transactionManager;
+	private final MemberRepositoryV3 memberRepository;
+
+	// Connection 관련 코드가 (JDBC) 서비스 코드에 위치해 있다.
+	// JDBC 기술에 서비스 코드가 의존하고 있다.
+	// 트랜잭션이 구현되어 있지만, JDBC 코드에 의존적임. (향후에 기술 변경시 영향)
+
+	// 이 단위는 원자적으로 Commit 되거나 Rollback 되어야 한다.
+	public void accountTransfer(String fromId, String toId, int money) throws SQLException {
+
+		TransactionStatus status = transactionManager.getTransaction(new DefaultTransactionDefinition());
+
+		try{
+			bizLogic(fromId, toId, money);
+			transactionManager.commit(status);
+		} catch (Exception e) {
+			transactionManager.rollback(status);
+			throw new IllegalStateException(e);
+		}
+
+		// release 는 무필요, commit / rollback 할 때 알아서 처리함. (TxManager 내부에서 처리)
+	}
+
+	private void bizLogic(String fromId, String toId, int money) throws SQLException {
+		// 비즈니스 로직 수행
+		Member fromMember = memberRepository.findById(fromId);
+		Member toMember = memberRepository.findById(toId);
+
+		// 아래 두 동작은 같은 커넥션에서 동작해야 함 (같은 커넥션 - 같은 세션), 이를 위해 커넥션을 파라메터로 전달.
+		memberRepository.update(fromId, fromMember.getMoney() - money);
+		validation(toMember);
+		memberRepository.update(toId, toMember.getMoney() + money);
+	}
+
+	private static void release(Connection con) {
+		if (con != null){
+			try {
+				con.setAutoCommit(true);
+				// 자동 커밋 모드(원래 기본값으로 돌려주어야 함), 풀에 들어갈때 Auto commit false 이면 문제 발생 가능
+				// 다시 꺼낼 때,,, 기본 값인지 아닌지 모르기 때문(그냥 기본값으로 원래대로 써라)
+				con.close();
+			} catch (Exception e) {
+				log.info("error", e); // exception의 경우 {} 사용 안함.
+			}
+		}
+	}
+
+	private static void validation(Member toMember) {
+		if (toMember.getMemberId().equals("ex")){
+			throw new IllegalStateException("이체 중 예외 발생");
+		}
+	}
+}
