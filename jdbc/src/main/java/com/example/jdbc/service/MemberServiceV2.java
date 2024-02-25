@@ -22,6 +22,10 @@ public class MemberServiceV2 {
 
 	private final MemberRepositoryV2 memberRepository;
 
+	// Connection 관련 코드가 (JDBC) 서비스 코드에 위치해 있다.
+	// JDBC 기술에 서비스 코드가 의존하고 있다.
+	// 트랜잭션이 구현되어 있지만, JDBC 코드에 의존적임. (향후에 기술 변경시 영향)
+
 	// 이 단위는 원자적으로 Commit 되거나 Rollback 되어야 한다.
 	public void accountTransfer(String fromId, String toId, int money) throws SQLException {
 		Connection con = dataSource.getConnection();

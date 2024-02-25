@@ -14,6 +14,8 @@ public class MemberServiceV1 {
 
 	// 이 단위는 원자적으로 Commit 되거나 Rollback 되어야 한다.
 	public void accountTransfer(String fromId, String toId, int money) throws SQLException {
+		// SQLException - JDBC 기술에 종속적인 예외에 해당.
+		// 기술 바꾸게 되면 나중에 컴파일 과정에서 SQLException 변경 필요
 		Member fromMember = memberRepository.findById(fromId);
 		Member toMember = memberRepository.findById(toId);
 
