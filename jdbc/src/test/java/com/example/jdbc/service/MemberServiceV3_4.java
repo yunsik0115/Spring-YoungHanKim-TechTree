@@ -2,14 +2,12 @@ package com.example.jdbc.service;
 
 import static com.example.jdbc.connection.ConnectionConst.*;
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +24,8 @@ import com.example.repository.MemberRepositoryV3;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@SpringBootTest // Test 돌릴 때 Spring 컨테이너를 띄운다.
-class MemberServiceV3_3Test {
+@SpringBootTest
+public class MemberServiceV3_4 {
 
 	public static final String MEMBER_A = "memberA";
 	public static final String MEMBER_B = "memberB";
@@ -41,21 +39,23 @@ class MemberServiceV3_3Test {
 
 	@TestConfiguration
 	static class TestConfig {
-		@Bean
-		DataSource dataSource(){
-			return new DriverManagerDataSource(URL, USERNAME, PASSWORD);
+
+		private final DataSource dataSource;
+
+		public TestConfig(DataSource dataSource) {
+			this.dataSource = dataSource;
 		}
 
 		@Bean
 		PlatformTransactionManager platformTransactionManager(){
 			// PROXY에서 사용 (결국 Transaction Manager를 필요로 한다.)
-			return new DataSourceTransactionManager(dataSource());
+			return new DataSourceTransactionManager(dataSource);
 			// 생략해도 될거같은데...? 나중에 설명
 		}
 
 		@Bean
 		MemberRepositoryV3 memberRepositoryV3(){
-			return new MemberRepositoryV3(dataSource());
+			return new MemberRepositoryV3(dataSource);
 		}
 
 		@Bean
