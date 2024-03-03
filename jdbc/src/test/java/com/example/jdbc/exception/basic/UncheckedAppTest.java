@@ -14,6 +14,8 @@ public class UncheckedAppTest {
 		Assertions.assertThatThrownBy(controller::request).isInstanceOf(Exception.class);
 	}
 
+	// TIP . e.printStackTrace() 대신 log.info(e)를 사용하자.
+
 	static class Controller {
 		Service service = new Service();
 
