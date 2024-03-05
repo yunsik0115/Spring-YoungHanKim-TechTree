@@ -39,9 +39,9 @@ public class HelloTraceV2 {
 		TraceId traceId = status.getTraceId();
 
 		if (e == null) {
-			log.info("[" + traceId.getId() + "]" + addSpace(COMPLETE_PREFIX, traceId.getLevel()) + "message = " + status.getMessage() + "time = " + resultTimeMs);
+			log.info("[" + traceId.getId() + "]" + addSpace(COMPLETE_PREFIX, traceId.getLevel()) + "message = " + status.getMessage() + " time = " + resultTimeMs);
 		} else {
-			log.info("[" + traceId.getId() + "]" + addSpace(COMPLETE_PREFIX, traceId.getLevel()) + "message = " + status.getMessage() + "time = " + resultTimeMs + "ex = " + e.getMessage());
+			log.info("[" + traceId.getId() + "]" + addSpace(COMPLETE_PREFIX, traceId.getLevel()) + "message = " + status.getMessage() + " time = " + resultTimeMs + ", ex = " + e.getMessage());
 		}
 	}
 
