@@ -1,4 +1,4 @@
-package hello.advanced.app;
+package hello.advanced.app.v1;
 
 import org.springframework.stereotype.Service;
 

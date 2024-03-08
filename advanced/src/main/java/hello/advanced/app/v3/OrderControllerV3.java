@@ -4,7 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import hello.advanced.app.OrderServiceV2;
+import hello.advanced.app.v2.OrderServiceV2;
 import hello.advanced.logtrace.LogTrace;
 import hello.advanced.trace.TraceStatus;
 import lombok.RequiredArgsConstructor;

@@ -2,7 +2,7 @@ package hello.advanced.app.v3;
 
 import org.springframework.stereotype.Repository;
 
-import hello.advanced.app.OrderRepositoryV2;
+import hello.advanced.app.v2.OrderRepositoryV2;
 import hello.advanced.logtrace.LogTrace;
 import hello.advanced.trace.TraceId;
 import hello.advanced.trace.TraceStatus;
